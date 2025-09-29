@@ -1,0 +1,1057 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Garden Journal</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+            background-color: #f9fafb;
+            line-height: 1.6;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+            padding: 1.5rem 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo {
+            width: 2rem;
+            height: 2rem;
+            margin-right: 1rem;
+            fill: currentColor;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        .nav {
+            display: flex;
+            gap: 2rem;
+            margin-bottom: 2rem;
+            border-bottom: 1px solid #e5e7eb;
+            padding-bottom: 1rem;
+        }
+        
+        .nav-btn {
+            background: none;
+            border: none;
+            padding: 0.75rem 1rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.2s;
+            color: #6b7280;
+        }
+        
+        .nav-btn:hover {
+            color: #374151;
+            background-color: #f3f4f6;
+        }
+        
+        .nav-btn.active {
+            background-color: #dcfce7;
+            color: #166534;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 0.75rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            margin-bottom: 1.5rem;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .stat-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 0.75rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .stat-card.green { background-color: #f0fdf4; }
+        .stat-card.blue { background-color: #eff6ff; }
+        .stat-card.orange { background-color: #fff7ed; }
+        
+        .stat-number {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-top: 0.25rem;
+        }
+        
+        .green .stat-number { color: #166534; }
+        .blue .stat-number { color: #1d4ed8; }
+        .orange .stat-number { color: #ea580c; }
+        
+        .stat-label {
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+        
+        .green .stat-label { color: #16a34a; }
+        .blue .stat-label { color: #2563eb; }
+        .orange .stat-label { color: #ea580c; }
+        
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+        
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .form-group.full-width {
+            grid-column: 1 / -1;
+        }
+        
+        label {
+            font-weight: 500;
+            margin-bottom: 0.25rem;
+            color: #374151;
+        }
+        
+        input, select, textarea {
+            padding: 0.75rem;
+            border: 1px solid #d1d5db;
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            transition: border-color 0.2s;
+        }
+        
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: #10b981;
+            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+        }
+        
+        .btn {
+            background: #10b981;
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        
+        .btn:hover {
+            background: #059669;
+        }
+        
+        .btn-secondary {
+            background: #3b82f6;
+        }
+        
+        .btn-secondary:hover {
+            background: #2563eb;
+        }
+        
+        .entries-list {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        
+        .entry-item {
+            border-left: 4px solid #10b981;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            background: #f9fafb;
+            border-radius: 0 0.5rem 0.5rem 0;
+        }
+        
+        .entry-header {
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+        
+        .entry-date {
+            font-size: 0.875rem;
+            color: #6b7280;
+            margin-bottom: 0.5rem;
+        }
+        
+        .entry-notes {
+            margin-top: 0.5rem;
+        }
+        
+        .issues {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+        
+        .issue-tag {
+            background: #fee2e2;
+            color: #dc2626;
+            padding: 0.25rem 0.5rem;
+            border-radius: 1rem;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+        
+        .plants-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1rem;
+        }
+        
+        .plant-card {
+            border: 1px solid #e5e7eb;
+            border-radius: 0.75rem;
+            padding: 1rem;
+            transition: box-shadow 0.2s;
+        }
+        
+        .plant-card:hover {
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        
+        .plant-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 0.75rem;
+        }
+        
+        .plant-name {
+            font-size: 1.125rem;
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+        
+        .plant-variety {
+            color: #6b7280;
+        }
+        
+        .plant-details {
+            font-size: 0.875rem;
+            color: #6b7280;
+            line-height: 1.4;
+        }
+        
+        .prediction {
+            color: #2563eb;
+            font-weight: 500;
+            margin-top: 0.5rem;
+        }
+        
+        .recommendations {
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        
+        .recommendation {
+            padding: 0.75rem;
+            border-radius: 0.5rem;
+            margin-bottom: 0.75rem;
+            border-left: 4px solid;
+        }
+        
+        .recommendation.high {
+            background: #fef2f2;
+            border-color: #ef4444;
+        }
+        
+        .recommendation.medium {
+            background: #fffbeb;
+            border-color: #f59e0b;
+        }
+        
+        .recommendation.low {
+            background: #eff6ff;
+            border-color: #3b82f6;
+        }
+        
+        .rec-header {
+            font-weight: 600;
+            font-size: 0.875rem;
+            margin-bottom: 0.25rem;
+        }
+        
+        .rec-message {
+            font-size: 0.875rem;
+            color: #6b7280;
+        }
+        
+        .priority-badge {
+            display: inline-block;
+            padding: 0.125rem 0.5rem;
+            border-radius: 0.25rem;
+            font-size: 0.75rem;
+            font-weight: 500;
+            margin-left: 0.5rem;
+        }
+        
+        .priority-badge.high {
+            background: #fecaca;
+            color: #991b1b;
+        }
+        
+        .priority-badge.medium {
+            background: #fed7aa;
+            color: #9a3412;
+        }
+        
+        .priority-badge.low {
+            background: #bfdbfe;
+            color: #1e40af;
+        }
+        
+        .hidden {
+            display: none !important;
+        }
+        
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+        
+        @media (max-width: 768px) {
+            .grid-2 {
+                grid-template-columns: 1fr;
+            }
+            
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .nav {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="header-content">
+            <svg class="logo" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M7 20l4-16m2 16l4-16M6 9h14M4 15h14"/>
+            </svg>
+            <h1>Garden Journal</h1>
+        </div>
+    </div>
+
+    <div class="container">
+        <nav class="nav">
+            <button class="nav-btn active" onclick="showTab('dashboard')">📊 Dashboard</button>
+            <button class="nav-btn" onclick="showTab('journal')">📝 Journal</button>
+            <button class="nav-btn" onclick="showTab('plants')">🌱 Plants</button>
+            <button class="nav-btn" onclick="showTab('settings')">⚙️ Settings</button>
+        </nav>
+
+        <!-- Dashboard Tab -->
+        <div id="dashboard" class="tab-content active">
+            <div class="stats-grid">
+                <div class="stat-card green">
+                    <div>
+                        <div class="stat-label">Total Plants</div>
+                        <div class="stat-number" id="total-plants">0</div>
+                    </div>
+                    <div style="font-size: 2rem;">🌱</div>
+                </div>
+                <div class="stat-card blue">
+                    <div>
+                        <div class="stat-label">Journal Entries</div>
+                        <div class="stat-number" id="total-entries">0</div>
+                    </div>
+                    <div style="font-size: 2rem;">📝</div>
+                </div>
+                <div class="stat-card orange">
+                    <div>
+                        <div class="stat-label">Issues to Address</div>
+                        <div class="stat-number" id="total-issues">0</div>
+                    </div>
+                    <div style="font-size: 2rem;">⚠️</div>
+                </div>
+            </div>
+
+            <div class="grid-2">
+                <div class="card">
+                    <h3 style="margin-bottom: 1rem; display: flex; align-items: center;">
+                        📈 Growth Predictions
+                    </h3>
+                    <div id="predictions-list"></div>
+                </div>
+
+                <div class="card">
+                    <h3 style="margin-bottom: 1rem; display: flex; align-items: center;">
+                        🔔 Care Recommendations
+                    </h3>
+                    <div id="recommendations-list" class="recommendations"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Journal Tab -->
+        <div id="journal" class="tab-content">
+            <div class="card">
+                <h3 style="margin-bottom: 1rem;">New Journal Entry</h3>
+                <form id="journal-form" class="form-grid">
+                    <div class="form-group">
+                        <label for="entry-plant">Plant</label>
+                        <select id="entry-plant" required>
+                            <option value="">Select a plant</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="entry-date">Date</label>
+                        <input type="date" id="entry-date" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="entry-height">Height (cm)</label>
+                        <input type="number" id="entry-height" placeholder="Plant height in cm">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="entry-issues">Issues (hold Ctrl/Cmd to select multiple)</label>
+                        <select id="entry-issues" multiple size="4">
+                            <option value="aphids">Aphids</option>
+                            <option value="rust">Rust</option>
+                            <option value="nutrient_deficiency">Nutrient Deficiency</option>
+                            <option value="overwatering">Overwatering</option>
+                            <option value="underwatering">Underwatering</option>
+                            <option value="pest_damage">Pest Damage</option>
+                            <option value="leaf_spots">Leaf Spots</option>
+                            <option value="wilting">Wilting</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group full-width">
+                        <label for="entry-notes">Notes</label>
+                        <textarea id="entry-notes" rows="3" placeholder="Observations about the plant..." required></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-secondary">Add Entry</button>
+                    </div>
+                </form>
+            </div>
+
+            <div class="card">
+                <h3 style="margin-bottom: 1rem;">Recent Journal Entries</h3>
+                <div id="entries-list" class="entries-list"></div>
+            </div>
+        </div>
+
+        <!-- Plants Tab -->
+        <div id="plants" class="tab-content">
+            <div class="card">
+                <h3 style="margin-bottom: 1rem;">Add New Plant</h3>
+                <form id="plant-form" class="form-grid">
+                    <div class="form-group">
+                        <label for="plant-type">Main Type</label>
+                        <select id="plant-type" required>
+                            <option value="">Select type</option>
+                            <option value="vegetable">Vegetable</option>
+                            <option value="flower">Flower</option>
+                            <option value="herb">Herb</option>
+                            <option value="shrub">Shrub</option>
+                            <option value="fruit tree">Fruit Tree</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="plant-variety">Variety</label>
+                        <input type="text" id="plant-variety" placeholder="e.g., satsuma, doris" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="plant-date">Planted Date</label>
+                        <input type="date" id="plant-date" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="plant-location">Location</label>
+                        <input type="text" id="plant-location" placeholder="Garden bed location" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <button type="submit" class="btn">Add Plant</button>
+                    </div>
+                </form>
+            </div>
+
+            <div class="card">
+                <h3 style="margin-bottom: 1rem;">Your Plants</h3>
+                <div id="plants-list" class="plants-grid"></div>
+            </div>
+        </div>
+
+        <!-- Settings Tab -->
+        <div id="settings" class="tab-content">
+            <div class="card">
+                <h3 style="margin-bottom: 1rem;">Data Management</h3>
+                <div style="display: grid; gap: 1rem;">
+                    <div style="padding: 1rem; background: #f9fafb; border-radius: 0.5rem;">
+                        <h4 style="margin-bottom: 0.5rem; color: #374151;">Export Data</h4>
+                        <p style="margin-bottom: 1rem; color: #6b7280; font-size: 0.875rem;">
+                            Download your garden journal data as a JSON file for backup or sharing.
+                        </p>
+                        <button class="btn" onclick="exportData()">
+                            📥 Export Data
+                        </button>
+                    </div>
+
+                    <div style="padding: 1rem; background: #f9fafb; border-radius: 0.5rem;">
+                        <h4 style="margin-bottom: 0.5rem; color: #374151;">Import Data</h4>
+                        <p style="margin-bottom: 1rem; color: #6b7280; font-size: 0.875rem;">
+                            Load garden journal data from a JSON file.
+                        </p>
+                        <input type="file" id="import-file" accept=".json" style="display: none;" 
+                               onchange="if(this.files[0]) importData(this.files[0])">
+                        <button class="btn btn-secondary" onclick="document.getElementById('import-file').click()">
+                            📤 Import Data
+                        </button>
+                    </div>
+
+                    <div style="padding: 1rem; background: #fff5f5; border-radius: 0.5rem; border: 1px solid #fecaca;">
+                        <h4 style="margin-bottom: 0.5rem; color: #991b1b;">Clear All Data</h4>
+                        <p style="margin-bottom: 1rem; color: #dc2626; font-size: 0.875rem;">
+                            ⚠️ Warning: This will permanently delete all plants and journal entries.
+                        </p>
+                        <button style="background: #ef4444; color: white; border: none; padding: 0.75rem 1.5rem; 
+                                       border-radius: 0.5rem; font-weight: 500; cursor: pointer;"
+                                onmouseover="this.style.background='#dc2626'" 
+                                onmouseout="this.style.background='#ef4444'"
+                                onclick="clearAllData()">
+                            🗑️ Clear All Data
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3 style="margin-bottom: 1rem;">Auto-Save Status</h3>
+                <p style="color: #6b7280;">
+                    ✅ Auto-save is enabled. Your data is automatically saved to browser storage after each change.
+                </p>
+                <p style="color: #6b7280; font-size: 0.875rem; margin-top: 0.5rem;">
+                    Last saved: <span id="last-saved">Never</span>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Data storage - will be overwritten by loaded data
+        let plants = [];
+        let journalEntries = [];
+
+        // Default data (used if no saved data exists)
+        const defaultData = {
+            plants: [
+                {
+                    id: 1,
+                    mainType: 'fruit tree',
+                    variety: 'apple - doris',
+                    instanceId: 1,
+                    plantedDate: '2024-03-15',
+                    location: 'North Garden Bed 1'
+                },
+                {
+                    id: 2,
+                    mainType: 'fruit tree',
+                    variety: 'plum - satsuma',
+                    instanceId: 1,
+                    plantedDate: '2024-03-20',
+                    location: 'South Garden Bed 2'
+                },
+                {
+                    id: 3,
+                    mainType: 'vegetable',
+                    variety: 'tomato - cherry',
+                    instanceId: 1,
+                    plantedDate: '2024-04-01',
+                    location: 'Greenhouse A'
+                }
+            ],
+            journalEntries: [
+                {
+                    id: 1,
+                    plantId: 1,
+                    date: '2024-09-20',
+                    height: 45,
+                    notes: 'Showing good growth, leaves healthy green color',
+                    issues: []
+                },
+                {
+                    id: 2,
+                    plantId: 2,
+                    date: '2024-09-18',
+                    height: 38,
+                    notes: 'Small fruit developing, about 10 plums visible',
+                    issues: ['aphids']
+                },
+                {
+                    id: 3,
+                    plantId: 3,
+                    date: '2024-09-22',
+                    height: 32,
+                    notes: 'First flowers appearing, good root development',
+                    issues: []
+                }
+            ]
+        };
+
+        // Load data from localStorage or use defaults
+        function loadData() {
+            try {
+                const savedData = localStorage.getItem('gardenJournalData');
+                if (savedData) {
+                    const data = JSON.parse(savedData);
+                    plants = data.plants || [];
+                    journalEntries = data.journalEntries || [];
+                } else {
+                    plants = [...defaultData.plants];
+                    journalEntries = [...defaultData.journalEntries];
+                }
+            } catch (e) {
+                console.error('Error loading data:', e);
+                plants = [...defaultData.plants];
+                journalEntries = [...defaultData.journalEntries];
+            }
+        }
+
+        // Save data to localStorage
+        function saveData() {
+            try {
+                const now = new Date();
+                const data = {
+                    plants: plants,
+                    journalEntries: journalEntries,
+                    lastSaved: now.toISOString()
+                };
+                localStorage.setItem('gardenJournalData', JSON.stringify(data));
+                
+                // Update last saved display
+                const lastSavedElement = document.getElementById('last-saved');
+                if (lastSavedElement) {
+                    lastSavedElement.textContent = now.toLocaleString();
+                }
+            } catch (e) {
+                console.error('Error saving data:', e);
+            }
+        }
+
+        // Export data as JSON file
+        function exportData() {
+            const data = {
+                plants: plants,
+                journalEntries: journalEntries,
+                exportDate: new Date().toISOString()
+            };
+            
+            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `garden-journal-${new Date().toISOString().split('T')[0]}.json`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        // Import data from JSON file
+        function importData(file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const data = JSON.parse(e.target.result);
+                    if (data.plants && data.journalEntries) {
+                        plants = data.plants;
+                        journalEntries = data.journalEntries;
+                        saveData();
+                        updateDisplay();
+                        alert('Data imported successfully!');
+                    } else {
+                        alert('Invalid data format. Please check your JSON file.');
+                    }
+                } catch (error) {
+                    alert('Error importing data: ' + error.message);
+                }
+            };
+            reader.readAsText(file);
+        }
+
+        // Clear all data
+        function clearAllData() {
+            if (confirm('Are you sure you want to clear all data? This cannot be undone!')) {
+                plants = [];
+                journalEntries = [];
+                saveData();
+                updateDisplay();
+                alert('All data has been cleared.');
+            }
+        }
+
+        // Tab switching
+        function showTab(tabName) {
+            // Hide all tabs
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Remove active class from all nav buttons
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // Show selected tab
+            document.getElementById(tabName).classList.add('active');
+            
+            // Add active class to clicked button
+            event.target.classList.add('active');
+            
+            // Update data when switching to any tab
+            updateDisplay();
+        }
+
+        // Plant management
+        function addPlant() {
+            const form = document.getElementById('plant-form');
+            const formData = new FormData(form);
+            
+            const plant = {
+                id: plants.length + 1,
+                mainType: document.getElementById('plant-type').value,
+                variety: document.getElementById('plant-variety').value,
+                plantedDate: document.getElementById('plant-date').value,
+                location: document.getElementById('plant-location').value,
+                instanceId: plants.filter(p => 
+                    p.mainType === document.getElementById('plant-type').value && 
+                    p.variety === document.getElementById('plant-variety').value
+                ).length + 1
+            };
+            
+            plants.push(plant);
+            form.reset();
+            saveData();
+            updateDisplay();
+        }
+
+        // Journal management
+        function addJournalEntry() {
+            const plantId = parseInt(document.getElementById('entry-plant').value);
+            const notes = document.getElementById('entry-notes').value;
+            
+            if (!plantId || !notes) return;
+            
+            const issues = Array.from(document.getElementById('entry-issues').selectedOptions)
+                .map(option => option.value);
+            
+            const entry = {
+                id: journalEntries.length + 1,
+                plantId: plantId,
+                date: document.getElementById('entry-date').value,
+                height: parseInt(document.getElementById('entry-height').value) || 0,
+                notes: notes,
+                issues: issues
+            };
+            
+            journalEntries.push(entry);
+            document.getElementById('journal-form').reset();
+            document.getElementById('entry-date').value = new Date().toISOString().split('T')[0];
+            saveData();
+            updateDisplay();
+        }
+
+        // Analysis functions
+        function getPlantGrowthData(plantId) {
+            return journalEntries
+                .filter(entry => entry.plantId === plantId)
+                .sort((a, b) => new Date(a.date) - new Date(b.date));
+        }
+
+        function getGrowthPrediction(plantId) {
+            const data = getPlantGrowthData(plantId);
+            const plant = plants.find(p => p.id === plantId);
+            
+            if (data.length < 2) return null;
+            
+            const growth = data[data.length - 1].height - data[0].height;
+            const days = (new Date(data[data.length - 1].date) - new Date(data[0].date)) / (1000 * 60 * 60 * 24);
+            const growthRate = growth / days;
+            
+            const fruitingHeights = {
+                'fruit tree': 60,
+                'vegetable': 40,
+                'flower': 30,
+                'herb': 25,
+                'shrub': 50
+            };
+            
+            const targetHeight = fruitingHeights[plant?.mainType] || 50;
+            const currentHeight = data[data.length - 1].height;
+            
+            if (currentHeight >= targetHeight) {
+                return 'Ready for fruiting season!';
+            }
+            
+            const daysToFruiting = Math.ceil((targetHeight - currentHeight) / Math.max(growthRate, 0.1));
+            const fruitingDate = new Date();
+            fruitingDate.setDate(fruitingDate.getDate() + daysToFruiting);
+            
+            return `Estimated fruiting: ${fruitingDate.toLocaleDateString()}`;
+        }
+
+        function getCareRecommendations(plantId) {
+            const entries = getPlantGrowthData(plantId);
+            const plant = plants.find(p => p.id === plantId);
+            const latestEntry = entries[entries.length - 1];
+            
+            if (!latestEntry) return [];
+            
+            const recommendations = [];
+            
+            // Growth analysis
+            if (entries.length > 1) {
+                const growthRate = (latestEntry.height - entries[entries.length - 2].height) / 7;
+                if (growthRate < 1 && plant.mainType !== 'herb') {
+                    recommendations.push({
+                        type: 'growth',
+                        message: 'Slow growth detected. Consider fertilizing or checking soil conditions.',
+                        priority: 'medium'
+                    });
+                }
+            }
+            
+            // Issue-based recommendations
+            const issueRecommendations = {
+                aphids: {
+                    message: 'Aphid infestation detected. Spray with insecticidal soap or neem oil.',
+                    priority: 'high'
+                },
+                rust: {
+                    message: 'Rust fungus present. Remove affected leaves and improve air circulation.',
+                    priority: 'high'
+                },
+                nutrient_deficiency: {
+                    message: 'Signs of nutrient deficiency. Apply balanced fertilizer and test soil pH.',
+                    priority: 'medium'
+                },
+                overwatering: {
+                    message: 'Overwatering detected. Reduce watering frequency and ensure good drainage.',
+                    priority: 'high'
+                },
+                underwatering: {
+                    message: 'Plant appears dehydrated. Increase watering frequency and check soil moisture.',
+                    priority: 'high'
+                },
+                wilting: {
+                    message: 'Wilting detected. Check watering, soil drainage, and for root problems.',
+                    priority: 'high'
+                }
+            };
+            
+            latestEntry.issues.forEach(issue => {
+                if (issueRecommendations[issue]) {
+                    recommendations.push({
+                        ...issueRecommendations[issue],
+                        type: 'issue',
+                        plantName: `${plant.mainType} (${plant.variety})`
+                    });
+                }
+            });
+            
+            return recommendations;
+        }
+
+        // Display updates
+        function updateDisplay() {
+            updateStats();
+            updatePlantsList();
+            updateEntriesList();
+            updatePredictions();
+            updateRecommendations();
+            updatePlantSelect();
+        }
+
+        function updateStats() {
+            document.getElementById('total-plants').textContent = plants.length;
+            document.getElementById('total-entries').textContent = journalEntries.length;
+            document.getElementById('total-issues').textContent = 
+                journalEntries.reduce((sum, entry) => sum + entry.issues.length, 0);
+        }
+
+        function updatePlantSelect() {
+            const select = document.getElementById('entry-plant');
+            select.innerHTML = '<option value="">Select a plant</option>';
+            
+            plants.forEach(plant => {
+                const option = document.createElement('option');
+                option.value = plant.id;
+                option.textContent = `${plant.mainType} - ${plant.variety} (Instance ${plant.instanceId})`;
+                select.appendChild(option);
+            });
+        }
+
+        function updatePredictions() {
+            const container = document.getElementById('predictions-list');
+            container.innerHTML = '';
+            
+            plants.forEach(plant => {
+                const prediction = getGrowthPrediction(plant.id);
+                const div = document.createElement('div');
+                div.style.cssText = 'display: flex; justify-content: space-between; align-items: center; padding: 0.75rem; background-color: #f9fafb; border-radius: 0.5rem; margin-bottom: 0.75rem;';
+                div.innerHTML = `
+                    <span style="font-weight: 500;">${plant.mainType} (${plant.variety})</span>
+                    <span style="font-size: 0.875rem; color: #6b7280;">${prediction || 'Need more data'}</span>
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        function updateRecommendations() {
+            const container = document.getElementById('recommendations-list');
+            container.innerHTML = '';
+            
+            const allRecommendations = plants.flatMap(plant => 
+                getCareRecommendations(plant.id).map(rec => ({
+                    ...rec,
+                    plantName: `${plant.mainType} (${plant.variety})`
+                }))
+            );
+            
+            if (allRecommendations.length === 0) {
+                container.innerHTML = '<p style="color: #6b7280; text-align: center; padding: 2rem;">No recommendations at this time. Keep monitoring your plants!</p>';
+                return;
+            }
+            
+            allRecommendations.forEach(rec => {
+                const div = document.createElement('div');
+                div.className = `recommendation ${rec.priority}`;
+                div.innerHTML = `
+                    <div class="rec-header">
+                        ${rec.plantName}
+                        <span class="priority-badge ${rec.priority}">${rec.priority}</span>
+                    </div>
+                    <div class="rec-message">${rec.message}</div>
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        function updatePlantsList() {
+            const container = document.getElementById('plants-list');
+            container.innerHTML = '';
+            
+            plants.forEach(plant => {
+                const growthData = getPlantGrowthData(plant.id);
+                const latestEntry = growthData[growthData.length - 1];
+                const hasIssues = latestEntry?.issues?.length > 0;
+                
+                const div = document.createElement('div');
+                div.className = 'plant-card';
+                div.innerHTML = `
+                    <div class="plant-header">
+                        <div>
+                            <div class="plant-name">${plant.mainType}</div>
+                            <div class="plant-variety">${plant.variety} - Instance ${plant.instanceId}</div>
+                        </div>
+                        ${hasIssues ? '<span style="color: #ef4444; font-size: 1.25rem;">⚠️</span>' : ''}
+                    </div>
+                    <div class="plant-details">
+                        <div>Planted: ${plant.plantedDate}</div>
+                        <div>Location: ${plant.location}</div>
+                        ${latestEntry ? `<div>Last height: ${latestEntry.height}cm</div>` : ''}
+                        <div class="prediction">${getGrowthPrediction(plant.id) || 'Need more data for prediction'}</div>
+                        <div style="margin-top: 0.75rem; color: #6b7280;">Entries: ${growthData.length}</div>
+                    </div>
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        function updateEntriesList() {
+            const container = document.getElementById('entries-list');
+            container.innerHTML = '';
+            
+            const sortedEntries = [...journalEntries].sort((a, b) => new Date(b.date) - new Date(a.date));
+            
+            sortedEntries.forEach(entry => {
+                const plant = plants.find(p => p.id === entry.plantId);
+                const div = document.createElement('div');
+                div.className = 'entry-item';
+                div.innerHTML = `
+                    <div class="entry-header">${plant?.mainType} - ${plant?.variety} (Instance ${plant?.instanceId})</div>
+                    <div class="entry-date">${entry.date}</div>
+                    ${entry.height > 0 ? `<div style="font-size: 0.875rem; color: #6b7280;">Height: ${entry.height}cm</div>` : ''}
+                    <div class="entry-notes">${entry.notes}</div>
+                    ${entry.issues.length > 0 ? `
+                        <div class="issues">
+                            ${entry.issues.map(issue => `<span class="issue-tag">${issue.replace('_', ' ')}</span>`).join('')}
+                        </div>
+                    ` : ''}
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        // Event listeners
+        document.getElementById('plant-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            addPlant();
+        });
+
+        document.getElementById('journal-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            addJournalEntry();
+        });
+
+        // Initialize
+        loadData();
+        document.getElementById('entry-date').value = new Date().toISOString().split('T')[0];
+        document.getElementById('plant-date').value = new Date().toISOString().split('T')[0];
+        updateDisplay();
+    </script>
+</body>
+</html>

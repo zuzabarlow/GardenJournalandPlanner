@@ -1,0 +1,55 @@
+{
+  "plants": [
+    {
+      "id": 1,
+      "mainType": "fruit tree",
+      "variety": "apple - doris",
+      "instanceId": 1,
+      "plantedDate": "2024-03-15",
+      "location": "North Garden Bed 1"
+    },
+    {
+      "id": 2,
+      "mainType": "fruit tree",
+      "variety": "plum - satsuma",
+      "instanceId": 1,
+      "plantedDate": "2024-03-20",
+      "location": "South Garden Bed 2"
+    },
+    {
+      "id": 3,
+      "mainType": "vegetable",
+      "variety": "tomato - cherry",
+      "instanceId": 1,
+      "plantedDate": "2024-04-01",
+      "location": "Greenhouse A"
+    }
+  ],
+  "journalEntries": [
+    {
+      "id": 1,
+      "plantId": 1,
+      "date": "2024-09-20",
+      "height": 45,
+      "notes": "Showing good growth, leaves healthy green color",
+      "issues": []
+    },
+    {
+      "id": 2,
+      "plantId": 2,
+      "date": "2024-09-18",
+      "height": 38,
+      "notes": "Small fruit developing, about 10 plums visible",
+      "issues": ["aphids"]
+    },
+    {
+      "id": 3,
+      "plantId": 3,
+      "date": "2024-09-22",
+      "height": 32,
+      "notes": "First flowers appearing, good root development",
+      "issues": []
+    }
+  ],
+  "exportDate": "2024-09-28T12:00:00.000Z"
+}
